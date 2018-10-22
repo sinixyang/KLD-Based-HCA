@@ -242,9 +242,4 @@ def kld_HCA(dataframe,target_field,variable_fields,kld_mode = "a",target_blackli
     kld_matrix_filtered,name_list = matrix_filter(kld_matrix,target_names,black_list = target_blacklist)
     draw_dendrogram(kld_matrix_filtered,name_list,mode = 'complete',tick_fontsize = 12,tick_direction =  "v")
 
-dataframe = pandas.read_csv("ht_geo_sm.csv")
-target_field = "Geo_object"
-variable_fields = ['Cu', 'Zn', 'Ni', 'Pb', 'Ag', 'Co',  'As', 'Hg'] 
-dataframe[variable_fields] = numpy.log(dataframe[variable_fields].values) #log-transform are used here
-target_blacklist = ["QSE","QC","QW","SPNW"] #
-kld_HCA(dataframe,target_field,variable_fields, "a", target_blacklist)
+
