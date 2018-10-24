@@ -14,13 +14,13 @@ from itertools import combinations
 
 def closure(mat,residue = False, summation = 1000000):
     '''
-    Close the geochemical data, a preprocess step before log-ratio transform, more inforation can be found in the books about composition data
-    Keyword arguments:
+    Close the geochemical data, a preprocess step before log-ratio transform:
     
         *mat*: a 2d numpy array, n rows stand for samples, m columns stand for variables.   
         *residue*: True or False. If True the output numpy array in a shape of n×(m+1), the last column is the residue
         *summuation*: The summation of composition data
     '''
+    
     if residue:
         mat = numpy.hstack( (mat / summation, (summation - mat.sum(1)).reshape(-1,1)))
     else:
@@ -36,6 +36,7 @@ def clr(mat, residue = True, summation = 1000000):
         *residue*: True or False. If True the output numpy array in a shape of n×(m+1), the last column is the residue
         *summuation*: The summation of composition data
     '''
+    
     mat = closure(mat,residue = residue, summation = summation)
     lmat = numpy.log(mat)
     gm = lmat.mean(axis=-1, keepdims=True)
@@ -54,6 +55,7 @@ def cal_kldivergence(cov0, cov1, mu0 = numpy.array([[0.0]]), mu1 = numpy.array([
     *mu1*: mean vector of N1
     *mode*: 'c' stands for the part about covariance; 'm' stands for the part about mean;'a' stands for both of them
     '''
+    
     nof_variable = cov1.shape[0]
     mu1 = mu1.reshape((nof_variable,1))
     mu0 = mu0.reshape((nof_variable,1))
@@ -82,6 +84,7 @@ def matrix_filter(matrix,name_list,white_list = [],black_list = []):
         *white_list*: white list of elements
         *black_list*: black list of elements
     '''
+    
     matrix_dataframe = pandas.DataFrame(matrix, index = name_list, columns = name_list)
     name_dict = {}
     for index,key in enumerate(name_list):
@@ -104,7 +107,7 @@ def draw_dendrogram(distance_matrix,field_names, mode = 'single', tick_fontsize 
     Keyword arguments:
         *distance_matrix*: distance matrix
         *field_names*: a list of elements names
-        *mode*: linkage method, four available method: single, complete,average or weighted
+        *mode*: linkage method, four methods are available: single, complete,average or weighted
         *tick_fontsize*: The font size of ticks
         *tick_direction*: The direction of ticks, v for vertical, h for horizonal    
     '''
