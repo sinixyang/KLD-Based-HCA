@@ -112,7 +112,7 @@ def draw_dendrogram(distance_matrix,field_names, mode = 'single', tick_fontsize 
     cm = scipy.spatial.distance.squareform(distance_matrix)
     linkage = sch.linkage(cm, method= mode )
     fig = pyplot.figure(figsize=(8,8))
-    ax1 = fig.add_axes([0.0,0.1,0.4,0.9]) #[0.0,0.1,0.2,0.9]
+    ax1 = fig.add_axes([0.0,0.1,0.4,0.9]) #setup the layout of dendrogram
     arch_dict = sch.dendrogram(linkage, orientation='left')
     ax1.set_xticks([])
     ax1.set_yticks([])
@@ -124,9 +124,9 @@ def draw_dendrogram(distance_matrix,field_names, mode = 'single', tick_fontsize 
     n = n[idx]    
     
     # Plot distance matrix.
-    axmatrix = fig.add_axes([0.5,0.1,1.0,0.9]) #[0.3,0.1,1.0,0.9]
+    axmatrix = fig.add_axes([0.5,0.1,1.0,0.9]) 
     im = axmatrix.matshow(m, aspect='auto', origin='upper', cmap=pyplot.cm.YlGnBu)
-    axcolor = fig.add_axes([0.5,0.0,1.0,0.05]) #[0.3,0.0,1.0,0.05]
+    axcolor = fig.add_axes([0.5,0.0,1.0,0.05]) 
     fig.colorbar(im, cax=axcolor,orientation='horizontal')
     axmatrix.set_xticks(range(len(n)))
     axmatrix.set_xticklabels(n, minor= False, fontsize= tick_fontsize)
@@ -153,6 +153,7 @@ def euclidean_HCA(dataframe,target_field,variable_fields,target_blacklist):
     *variable_fields*: column name list for elements' names
     *target_blacklist*: blacklist for removing some geo-objects in HCA
     '''
+    
     target_names = dataframe[target_field].unique()
     dataframe[variable_fields] = zscore(dataframe[variable_fields].values)
     nof_target = len(target_names)
@@ -185,6 +186,7 @@ def atichison_HCA(dataframe,target_field,variable_fields,target_blacklist):
     *variable_fields*: column name list for elements' names
     *target_blacklist*: blacklist for removing some geo-objects in HCA
     '''
+    
     target_names = dataframe[target_field].unique()
     nof_target = len(target_names)
     target_mask_dict = {}
@@ -216,6 +218,7 @@ def kld_HCA(dataframe,target_field,variable_fields,kld_mode = "a",target_blackli
     *variable_fields*: column name list for elements' names
     *target_blacklist*: blacklist for removing some geo-objects in HCA
     '''
+    
     target_names = dataframe[target_field].unique()
     nof_target = len(target_names)
     target_mask_dict = {}
@@ -241,5 +244,3 @@ def kld_HCA(dataframe,target_field,variable_fields,kld_mode = "a",target_blackli
         kld_matrix[i,j] = kld_matrix[j,i] = kld
     kld_matrix_filtered,name_list = matrix_filter(kld_matrix,target_names,black_list = target_blacklist)
     draw_dendrogram(kld_matrix_filtered,name_list,mode = 'complete',tick_fontsize = 12,tick_direction =  "v")
-
-
